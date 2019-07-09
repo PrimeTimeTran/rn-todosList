@@ -295,7 +295,7 @@ const TodoItem = (props) => {
 
 Could you think of any other ways to write this...?
 
-**D)** Update the imports at the top of the file to grab the things we'll need
+**D)** Update the imports at the top of the file to grab the things we'll need.
 
 ```jsx
 import React, { useState } from 'react';
@@ -378,7 +378,7 @@ const TodoItem = props => {
 
 ![pwd](./assets4/2i.gif)
 
-**J)** Define a new function, `onDeleteTodo` which implement the behavior of removing todos from our list
+**J)** Define a new function, `onDeleteTodo` which implements the behavior of removing a todo from our list.
 
 ```jsx
 const onDeleteTodo = id => {
@@ -431,7 +431,7 @@ const onLongPress = todo => {
 
 > **Tip** 💡: There is **no such thing** as perfect software/libraries/tools. Expo has **many bugs**. [Read](https://github.com/expo/expo/issues) about some of them.   While writing this assignment we found a bug where an `Alert` that's opened cannot be dismissed. This bug occurs on the simulator. You may need to work on a device to be able to press either `cancel` or `ok`.
 
-**N)** Implement adding a todo by import a `TextInput` from React Native.
+**N)** Implement adding a todo by importing `TextInput` from React Native.
 
 ```jsx
 import {
@@ -530,13 +530,13 @@ Watch til the end of the gif. On an actual device our submit button is unreachab
 
 ---
 
-### **Milestone 3 🛣🏃 Kick the user over to a new screen when they toggle a todo**
+### **Milestone 3 🛣🏃 Kick the user over to a new screen when they toggle. Add some transitions & fix the submit problem**
 
-Remember this image? Conceptually this is what we're doing. We want to push a new screen on top of the one we have, and then when a user presses back, pop it off.
+Remember this image? Conceptually this is what we're doing. We want to push a new screen on top of the one we're currently on, `AllScreen`, and then when a user presses back, pop it off.
 
 ![Stack Navigator](http://mcgivery.com/wp-content/uploads/2015/12/stack.png)
 
-**A)** Define a new component `SingleTodoScreen` which will show all the information about our todos.
+**A)** Define a new component `SingleTodoScreen` which will show the information about a single todo.
 
 <details>
 
@@ -585,6 +585,14 @@ const styles = StyleSheet.create({
 
 </details>
 
+Take special note of this line. This is how we're going to receive data to know what to render on this screen. Can you explain in detail what's going on here?
+
+```jsx
+const { id, status, body } = props.navigation.state.params.updatedTodo;
+```
+
+
+
 **B)** Define the *props* parameter sent in as the first argument to our `AllScreen` component.
 
 ```jsx
@@ -595,14 +603,6 @@ export default function AllScreen(props) {
 
 **C)** In the body of `onToggleTodo` add a new `setTimeout` which fires the function that moves the user from our `AllScreen` screen to do `SingleTodoScreen`.
 
-Nothing fancy going on here.
-
-We're calling a function `navigate`, which is inside of an object `navigation`, which is itself inside of another object `props`; which is passed to us for free by React Navigation.
-
-The function call is given two arguments.
-1. A string, `"SingleTodo"`
-2. An object, `{ updatedTodo: todo }`
-
 ```jsx
 setTimeout(() => {
   props.navigation.navigate("SingleTodo", {
@@ -611,8 +611,138 @@ setTimeout(() => {
 }, 1000);
 ```
 
+Nothing fancy here.
+
+We're calling a function `navigate`, which is inside of an object `navigation`; which is itself inside of another object `props` that is passed to us. Remember this comes for free from React Navigation.
+
+The function call is given two arguments.
+1. A string, `"SingleTodo"`
+2. An object, `{ updatedTodo: todo }`
+
+This is how `SingleTodoScreen` gets the data it needs to render!
+
+**D)** Import `SingleTodoScreen` from it's file into our `./navigation/MainTabNavigator.js`
+
+```jsx
+import SingleTodoScreen from '../screens/SingleTodoScreen';
+```
+
+**D)** Add this screen as a key to the appropriate Stack, `AllStack`.
+
+```jsx
+const AllStack = createStackNavigator(
+  {
+    All: AllScreen,
+    SingleTodo: SingleTodoScreen,
+  },
+  config
+);
+```
+
 ![pwd](./assets4/3c.gif)
 
-We should now see that we're kicked to another screen entirely.
+#### We should now be directed to a new screen when we toggle a todo, *nice*
 
-**D)**
+Notice how the screen slides in from the right. The header so faces out and then in.
+
+But what if we wanted to have the screen slide in from right to left...?
+
+**E)** Import some new dependencies into `MainTabNavigator`.
+
+```jsx
+import { Easing, Animated, Platform } from "react-native";
+```
+
+**F)** Define two new objects, `singleTodoConfig` & `newTransitionConfig`
+
+```jsx
+const singleTodoConfig = {
+  duration: 500,
+  easing: Easing.out(Easing.poly(4)),
+  timing: Animated.timing
+};
+
+const newTransitionConfig = {
+  headerMode: "screen",
+  transitionConfig: () => ({
+    transitionSpec: singleTodoConfig,
+    screenInterpolator: sceneProps => {
+      if (sceneProps.scene.route.routeName === "SingleTodo") {
+        const { layout, position, scene } = sceneProps;
+        const { index } = scene;
+
+        const width = layout.initWidth;
+        const translateX = position.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [-width, 0, 0]
+        });
+
+        const opacity = position.interpolate({
+          inputRange: [index - 1, index - 0.99, index],
+          outputRange: [0, 1, 1]
+        });
+
+        return { opacity, transform: [{ translateX }] };
+      }
+    }
+  })
+}
+```
+
+**G)** Comment out the previous config passed to `createStackNavigator` and pass the `newTransitionConfig` we just dfefined.
+
+```jsx
+const AllStack = createStackNavigator(
+  {
+    All: AllScreen,
+    SingleTodo: SingleTodoScreen,
+  },
+  // config
+  newTransitionConfig
+);
+```
+
+![pwd](./assets4/3g.gif)
+
+We should now see that we can make the screen move in from left to right, the header *slide* instead of fade out/in, and the speed increase dramatically.
+
+If you wanted to have the screen move in from the top very slowly then replace the previous two configs `singleTodoConfig` & `newTransitionConfig`
+
+```jsx
+const singleTodoConfig = {
+  duration: 5000,
+  easing: Easing.out(Easing.poly(4)),
+  timing: Animated.timing
+};
+
+const newTransitionConfig = {
+  headerMode: "screen",
+  transitionConfig: () => ({
+    transitionSpec: singleTodoConfig,
+    screenInterpolator: sceneProps => {
+      if (sceneProps.scene.route.routeName === "SingleTodo") {
+        const { layout, position, scene } = sceneProps;
+        const { index } = scene;
+
+        const width = layout.initWidth;
+        const translateY = position.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [-width, 0, 0]
+        });
+
+        const opacity = position.interpolate({
+          inputRange: [index - 1, index - 0.99, index],
+          outputRange: [0, 1, 1]
+        });
+
+        return { opacity, transform: [{ translateY }] };
+      }
+    }
+  })
+}
+```
+
+![pwd](./assets4/3g1.gif)
+
+We should be waiting for what seems like forever now =).
+
