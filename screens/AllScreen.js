@@ -6,7 +6,9 @@ import {
   TextInput,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  ImageBackground,
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from "react-native";
 
 import { TODOS } from "../utils/data.js";
@@ -85,29 +87,41 @@ export default function AllScreen(props) {
   };
 
   return (
-    <View style={styles.container}>
-      {todoList.map((todo, idx) => {
-        return (
-          <TodoItem
-            idx={idx}
-            todo={todo}
-            key={todo.body}
-            onToggleTodo={onToggleTodo}
-            onDeleteTodo={onDeleteTodo}
-          />
-        );
-      })}
-      <View style={styles.inputContainer}>
-        <TextInput
-          value={todoBody}
-          style={styles.todoInput}
-          onChangeText={text => setTodoBody(text)}
-        />
-        <TouchableOpacity style={styles.button} onPress={onSubmitTodo}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <ImageBackground
+      style={styles.container}
+      source={{
+        uri:
+          "https://mondrian.mashable.com/wp-content%252Fgallery%252Fiphone-6-wallpaper%252Ftumblr_nglh5niidy1tqjbpqo2_1280.jpg%252Ffit-in__850x850.jpg?signature=lE0RDwtRFUlnumotMRH6JRutz-g=&source=https%3A%2F%2Fmashable.com"
+      }}
+    >
+      <KeyboardAvoidingView enabled behavior="padding" style={styles.keyboard}>
+        <ScrollView style={{ flex: 1 }}>
+          <View style={{ marginTop: "200%" }}>
+            {todoList.map((todo, idx) => {
+              return (
+                <TodoItem
+                  idx={idx}
+                  todo={todo}
+                  key={todo.body}
+                  onToggleTodo={onToggleTodo}
+                  onDeleteTodo={onDeleteTodo}
+                />
+              );
+            })}
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={todoBody}
+              style={styles.todoInput}
+              onChangeText={text => setTodoBody(text)}
+            />
+            <TouchableOpacity style={styles.button} onPress={onSubmitTodo}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
@@ -126,8 +140,8 @@ const styles = StyleSheet.create({
   todoItem: {
     margin: 5,
     padding: 10,
+    minHeight: 50,
     width: "95%",
-    minHeight: 20,
     color: "white",
     borderRadius: 5,
     flexWrap: "wrap"
@@ -152,7 +166,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: "10%",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginBottom: 100
   },
   button: {
     height: 50,
@@ -165,5 +180,14 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold"
+  },
+  scrollView: {
+    flex: 1,
+    paddingTop: 1000
+  },
+  keyboard: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center"
   }
 });

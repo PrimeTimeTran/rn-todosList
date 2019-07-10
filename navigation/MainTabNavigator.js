@@ -69,8 +69,8 @@ const AllStack = createStackNavigator(
     All: AllScreen,
     SingleTodo: SingleTodoScreen,
   },
-  // config
-  newTransitionConfig
+  config
+  // newTransitionConfig
 );
 
 AllStack.navigationOptions = {

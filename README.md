@@ -2,7 +2,7 @@
 
 ## Introduction 🌟
 
-Let's build a Todo ✅ 📝 📅 app 📱 using [React Native](https://facebook.github.io/react-native/) & [Expo](https://expo.io/). Our app will help users keep track of all the things they need to do! 
+Let's build a Todo ✅ 📝 📅 app 📱 using [React Native](https://facebook.github.io/react-native/) & [Expo](https://expo.io/). Our app will help users keep track of all the things they need to do!
 
 ![pwd](./assets4/intro.gif)
 
@@ -18,6 +18,7 @@ Let's build a Todo ✅ 📝 📅 app 📱 using [React Native](https://facebook.
 - [ ] If the user's todo list is too long, they can continue scrolling so they can see the input to add a new todo.
 - [ ] User can add a new todo by entering it and submitting.
 - [ ] User will see the input reset when they submit their todo.
+- [ ] User can see what number a todo is.
 
 ### Learning Objectives ✍️📚📝 ️
 
@@ -47,13 +48,8 @@ We'll need to do the following steps three times. I'll do the first one, **Compl
 <summary>New Content</summary>
 
 ```jsx
-import React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-} from 'react-native';
-
+import React from "react";
+import { Text, View, StyleSheet } from "react-native";
 
 export default function CompleteScreen() {
   return (
@@ -64,16 +60,16 @@ export default function CompleteScreen() {
 }
 
 CompleteScreen.navigationOptions = {
-  header: null,
+  header: null
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
+    alignItems: "center",
+    backgroundColor: "#fff",
+    justifyContent: "center"
+  }
 });
 ```
 
@@ -84,7 +80,7 @@ const styles = StyleSheet.create({
 3. Refactor the import found in `./navigation/MainTabNavigator` to import the `CompleteScreen` component from the file we just renamed.
 
 ```jsx
-import CompleteScreen from '../screens/CompleteScreen';
+import CompleteScreen from "../screens/CompleteScreen";
 ```
 
 4. Rename the `Stack` variables in `./navigation/MainTabNavigator` to something consistent with the content inside of this screen. In other words, **choose names that make sense**.
@@ -96,13 +92,13 @@ import CompleteScreen from '../screens/CompleteScreen';
 ```jsx
 const CompleteStack = createStackNavigator(
   {
-    Complete: CompleteScreen,
+    Complete: CompleteScreen
   },
   config
 );
 
 CompleteStack.navigationOptions = {
-  tabBarLabel: 'Complete',
+  tabBarLabel: "Complete",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -111,18 +107,18 @@ CompleteStack.navigationOptions = {
   )
 };
 
-CompleteStack.path = '';
+CompleteStack.path = "";
 ```
 
 </details>
 
 **C)** Repeat previous steps 1-4 for screens `All` & `Active`.
 
-These screens however will have `navigationOptions` below their component definition. The `title` key, you guessed it, corresponds to the `title` of the screen. For example, here's the `AllScreen` navigationOptions. 
+These screens however will have `navigationOptions` below their component definition. The `title` key, you guessed it, corresponds to the `title` of the screen. For example, here's the `AllScreen` navigationOptions.
 
 ```jsx
 AllScreen.navigationOptions = {
-  title: 'All Todos',
+  title: "All Todos"
 };
 ```
 
@@ -133,8 +129,8 @@ We'll leave the other steps up to you. Here's a little help:
 <summary>Hint</summary>
 
 ```jsx
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
 export default function AllScreen() {
   return (
@@ -145,24 +141,24 @@ export default function AllScreen() {
 }
 
 AllScreen.navigationOptions = {
-  title: 'All Todos',
+  title: "All Todos"
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
+    alignItems: "center",
+    backgroundColor: "#fff",
+    justifyContent: "center"
+  }
 });
-
 ```
 
 </details>
 
 ![pwd](./assets4/1c.gif)
-#### We should now see something like this, *excellent*
+
+#### We should now see something like this, _excellent_
 
 ---
 
@@ -230,7 +226,6 @@ export const TODOS = [
     body: "Use knowledge gained at CoderSchool to build new todo app"
   }
 ];
-
 ```
 
 </details>
@@ -238,23 +233,24 @@ export const TODOS = [
 2. Import data from this file to our `AllScreen` component.
 
 ```jsx
-import { TODOS } from '../utils/data.js'
+import { TODOS } from "../utils/data.js";
 ```
 
 3. Console log the data to confirm we've got it in `AllScreen`.
 
 ![pwd](./assets4/2b.gif)
-#### We should now see something like this, *excellent*
 
-**B)** Update the styles at the bottom of `AllScreen` so we can *create a beautiful component* in the next step
+#### We should now see something like this, _excellent_
+
+**B)** Update the styles at the bottom of `AllScreen` so we can _create a beautiful component_ in the next step
 
 ```jsx
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    alignItems: "center",
+    backgroundColor: "#fff",
+    justifyContent: "center"
   },
   todoItem: {
     margin: 5,
@@ -276,7 +272,7 @@ const styles = StyleSheet.create({
 **C)** Define a new `TodoItem` component above our `AllScreen` component. Before moving to the next step, think about what this component is doing and what `props` it needs.
 
 ```jsx
-const TodoItem = (props) => {
+const TodoItem = props => {
   const statusStyle = {
     backgroundColor: props.todo.status === "Done" ? "blue" : "green"
   };
@@ -298,7 +294,7 @@ Could you think of any other ways to write this...?
 **D)** Update the imports at the top of the file to grab the things we'll need.
 
 ```jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Text, View, Alert, StyleSheet, TouchableOpacity } from "react-native";
 ```
 
@@ -307,16 +303,14 @@ import { Text, View, Alert, StyleSheet, TouchableOpacity } from "react-native";
 ```jsx
 <View style={styles.container}>
   {TODOS.map((todo, idx) => {
-    return (
-      <TodoItem key={todo.body} todo={todo} idx={idx} />
-    )
+    return <TodoItem key={todo.body} todo={todo} idx={idx} />;
   })}
 </View>
 ```
 
 ![pwd](./assets4/2e.gif)
 
-#### We should now see something like this, *incredible*
+#### We should now see something like this, _incredible_
 
 However, we're unable to toggle a todo's status.
 
@@ -332,7 +326,7 @@ const [todoList, setTodoList] = useState(TODOS);
 const onToggleTodo = id => {
   const todo = todoList.find(todo => todo.id === id);
   todo.status = todo.status === "Done" ? "Active" : "Done";
-  console.log('todo', todo)
+  console.log("todo", todo);
   const foundIndex = todoList.findIndex(todo => todo.id === id);
   todoList[foundIndex] = todo;
   const newTodoList = [...todoList];
@@ -374,7 +368,7 @@ const TodoItem = props => {
 };
 ```
 
-#### We should now be able to toggle the status of a todo, *amazing*
+#### We should now be able to toggle the status of a todo, _amazing_
 
 ![pwd](./assets4/2i.gif)
 
@@ -390,9 +384,7 @@ const onDeleteTodo = id => {
 **K)** Pass `onDeleteTodo` to our `TodoItem`.
 
 ```jsx
-<TodoItem
-  onDeleteTodo={onDeleteTodo}
-/>
+<TodoItem onDeleteTodo={onDeleteTodo} />
 ```
 
 **L)** Define a new function in `TodoItem`, `onLongPress`, which implements alerting the user and asking them to confirm their delete.
@@ -416,28 +408,22 @@ const onLongPress = todo => {
 };
 ```
 
-**M)** Pass *our* function, `onLongPress`, to the `onLongPress` prop of `TouchableOpacity`. Make sure to pass it the todo as an argument.
+**M)** Pass _our_ function, `onLongPress`, to the `onLongPress` prop of `TouchableOpacity`. Make sure to pass it the todo as an argument.
 
 ```jsx
-<TouchableOpacity
-  onLongPress={() => onLongPress(props.todo)}
->
-</TouchableOpacity>
+<TouchableOpacity onLongPress={() => onLongPress(props.todo)} />
 ```
 
-#### We should now be able to delete a todo, *excellent*
+#### We should now be able to delete a todo, _excellent_
 
 ![pwd](./assets4/2m.gif)
 
-> **Tip** 💡: There is **no such thing** as perfect software/libraries/tools. Expo has **many bugs**. [Read](https://github.com/expo/expo/issues) about some of them.   While writing this assignment we found a bug where an `Alert` that's opened cannot be dismissed. This bug occurs on the simulator. You may need to work on a device to be able to press either `cancel` or `ok`.
+> **Tip** 💡: There is **no such thing** as perfect software/libraries/tools. Expo has **many bugs**. [Read](https://github.com/expo/expo/issues) about some of them. While writing this assignment we found a bug where an `Alert` that's opened cannot be dismissed. This bug occurs on the simulator. You may need to work on a device to be able to press either `cancel` or `ok`.
 
 **N)** Implement adding a todo by importing `TextInput` from React Native.
 
 ```jsx
-import {
-  TextInput,
-} from "react-native";
-
+import { TextInput } from "react-native";
 ```
 
 **O)** Add styling for our `TextInput` and the button a user presses to submit.
@@ -456,11 +442,11 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 1,
-    width: '90%',
+    width: "90%",
     marginTop: 20,
     marginBottom: "10%",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   button: {
     height: 50,
@@ -475,30 +461,29 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 });
-
 ```
 
 **P)** Define a new piece of state, `todoBody`.
 
 ```jsx
-const [todoBody, setTodoBody] = useState('');
+const [todoBody, setTodoBody] = useState("");
 ```
 
 **Q)** Define a new function, `onSubmitTodo`, which will handle adding a todo to our list.
 
-Notice we check the todo's length before allowing the user to submit, *validations* for the win!
+Notice we check the todo's length before allowing the user to submit, _validations_ for the win!
 
 ```jsx
 const onSubmitTodo = () => {
-    const newTodo = {
-      body: todoBody,
-      status: "Active",
-      id: todoList.length + 1
-    };
-    const newTodoList = [...todoList, newTodo];
-    setTodoList(newTodoList);
-    setTodoBody("");
+  const newTodo = {
+    body: todoBody,
+    status: "Active",
+    id: todoList.length + 1
   };
+  const newTodoList = [...todoList, newTodo];
+  setTodoList(newTodoList);
+  setTodoBody("");
+};
 ```
 
 **R)** Add the appropriate JSX to the `AllScreen` component's return.
@@ -514,11 +499,11 @@ const onSubmitTodo = () => {
     <Text style={styles.buttonText}>Submit</Text>
   </TouchableOpacity>
 </View>
-
 ```
+
 ![pwd](./assets4/2q.gif)
 
-#### You should now be able to create a new todo, *excellent*
+#### You should now be able to create a new todo, _excellent_
 
 However, we have a problem.
 
@@ -580,7 +565,6 @@ const styles = StyleSheet.create({
     fontSize: 50
   }
 });
-
 ```
 
 </details>
@@ -591,9 +575,7 @@ Take special note of this line. This is how we're going to receive data to know 
 const { id, status, body } = props.navigation.state.params.updatedTodo;
 ```
 
-
-
-**B)** Define the *props* parameter sent in as the first argument to our `AllScreen` component.
+**B)** Define the _props_ parameter sent in as the first argument to our `AllScreen` component.
 
 ```jsx
 export default function AllScreen(props) {
@@ -616,6 +598,7 @@ Nothing fancy here.
 We're calling a function `navigate`, which is inside of an object `navigation`; which is itself inside of another object `props` that is passed to us. Remember this comes for free from React Navigation.
 
 The function call is given two arguments.
+
 1. A string, `"SingleTodo"`
 2. An object, `{ updatedTodo: todo }`
 
@@ -624,7 +607,7 @@ This is how `SingleTodoScreen` gets the data it needs to render!
 **D)** Import `SingleTodoScreen` from it's file into our `./navigation/MainTabNavigator.js`
 
 ```jsx
-import SingleTodoScreen from '../screens/SingleTodoScreen';
+import SingleTodoScreen from "../screens/SingleTodoScreen";
 ```
 
 **D)** Add this screen as a key to the appropriate Stack, `AllStack`.
@@ -633,7 +616,7 @@ import SingleTodoScreen from '../screens/SingleTodoScreen';
 const AllStack = createStackNavigator(
   {
     All: AllScreen,
-    SingleTodo: SingleTodoScreen,
+    SingleTodo: SingleTodoScreen
   },
   config
 );
@@ -641,7 +624,7 @@ const AllStack = createStackNavigator(
 
 ![pwd](./assets4/3c.gif)
 
-#### We should now be directed to a new screen when we toggle a todo, *nice*
+#### We should now be directed to a new screen when we toggle a todo, _nice_
 
 Notice how the screen slides in from the right. The header so faces out and then in.
 
@@ -686,7 +669,7 @@ const newTransitionConfig = {
       }
     }
   })
-}
+};
 ```
 
 **G)** Comment out the previous config passed to `createStackNavigator` and pass the `newTransitionConfig` we just dfefined.
@@ -695,7 +678,7 @@ const newTransitionConfig = {
 const AllStack = createStackNavigator(
   {
     All: AllScreen,
-    SingleTodo: SingleTodoScreen,
+    SingleTodo: SingleTodoScreen
   },
   // config
   newTransitionConfig
@@ -704,7 +687,7 @@ const AllStack = createStackNavigator(
 
 ![pwd](./assets4/3g.gif)
 
-We should now see that we can make the screen move in from left to right, the header *slide* instead of fade out/in, and the speed increase dramatically.
+We should now see that we can make the screen move in from left to right, the header _slide_ instead of fade out/in, and the speed increase dramatically.
 
 If you wanted to have the screen move in from the top very slowly then replace the previous two configs `singleTodoConfig` & `newTransitionConfig`
 
@@ -739,10 +722,144 @@ const newTransitionConfig = {
       }
     }
   })
-}
+};
 ```
 
 ![pwd](./assets4/3g1.gif)
 
 We should be waiting for what seems like forever now =).
 
+**H)** Fix problem where user cannot see the submit button when the keyboard slides into view and add a background. Also, add the ability for the user to be able to "scroll" the todos away so they can see the background
+
+1. Import the components we'll need to fix these problems.
+
+```jsx
+import {
+  ScrollView,
+  ImageBackground,
+  KeyboardAvoidingView
+} from "react-native";
+```
+
+2. Wrap everything we have so far with these components, passed a few properties.
+
+```jsx
+<ImageBackground style={styles.container} source={{ uri: 'https://mondrian.mashable.com/wp-content%252Fgallery%252Fiphone-6-wallpaper%252Ftumblr_nglh5niidy1tqjbpqo2_1280.jpg%252Ffit-in__850x850.jpg?signature=lE0RDwtRFUlnumotMRH6JRutz-g=&source=https%3A%2F%2Fmashable.com' }}>
+  <KeyboardAvoidingView
+    enabled
+    behavior="padding"
+    style={}
+  >
+    <ScrollView style={{ flex: 1 }}>
+      <View style={{ marginTop: "200%" }}>
+        {/* ... code ... */}
+      </View>
+    </ScrollView>
+  </KeyboardAvoidingView>
+</ImageBackground>
+```
+
+3. Update the styles in `AllScreen`.
+
+<details>
+
+<summary>New styles</summary>
+
+```jsx
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    backgroundColor: "black",
+    justifyContent: "center"
+  },
+  todoItem: {
+    margin: 5,
+    padding: 10,
+    minHeight: 50,
+    width: "95%",
+    color: "white",
+    borderRadius: 5,
+    flexWrap: "wrap"
+  },
+  todoText: {
+    fontSize: 20,
+    color: "white",
+    fontWeight: "bold"
+  },
+  todoInput: {
+    width: "95%",
+    minHeight: 30,
+    color: "white",
+    borderWidth: 1,
+    marginTop: "20%",
+    marginBottom: "5%",
+    borderColor: "grey"
+  },
+  inputContainer: {
+    flex: 1,
+    width: "90%",
+    marginTop: 20,
+    marginBottom: "10%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 100
+  },
+  button: {
+    height: 50,
+    width: "50%",
+    borderRadius: 10,
+    alignItems: "center",
+    backgroundColor: "blue",
+    justifyContent: "center"
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold"
+  },
+  scrollView: {
+    flex: 1,
+    paddingTop: 1000
+  }
+});
+```
+
+</details>
+
+![pwd](./assets4/3h.gif)
+
+> **Key Points** 🔑📝
+
+- Adding background images is a breeze.
+- `KeyboardAvoidingView` helps us avoid covering the `UI` when the user needs it.
+
+---
+
+![pwd](./assets4/review.gif)
+
+## Review 💻🤓🤔
+
+- React Navigation allows us to create as many screens as we want.
+- We can style our screens how we want using the config property of a navigator.
+- We can also style through the `navigationOptions` api.
+- We can pass props to screens we navigation to through `props.navigation.navigate.state.params`.
+- We can transition between screens however want using configs on our navigators as well.
+
+### Accomplishments 🥇🏆💯
+
+- [x] User can see a list of their todos.
+- [x] User can toggle a todo's status of active/done.
+- [x] User can see a different color todo background based on the todo's status.
+- [x] When a user toggles a todo, they're directed to an individual todo screen.
+- [x] User can delete a todo by long pressing it and being prompted to confirm their action.
+- [x] User can cancel deleting a todo.
+- [x] User can slide the todos list to see the entire app wallpaper.
+- [x] If the user's todo list is too long, they can continue scrolling so they can see the input to add a new todo.
+- [x] User can add a new todo by entering it and submitting.
+- [x] User will see the input reset when they submit their todo.
+
+### Rockets 🚀
+
+- [ ] User can see completed todos on the `CompleteScreen`.
+- [ ] User can see active todos on the `ActiveScreen`.
